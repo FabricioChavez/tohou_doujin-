@@ -55,18 +55,21 @@ public:
 
             spriteWidth_ = up.width/divider;
         }
-
+      sourceRect = {0, 0, static_cast<float>(spriteWidth_), static_cast<float>(spriteHeith_)};
        frameTime+=new_frame;
-      if(frameTime > 0.5f)
+      if(frameTime > 20.0f)
       {
           frameTime =0.0f;
           currentFrame++;
-            std::cout<<"DIVIDER :"<<divider<<std::endl;
-          if(currentFrame>divider)
+           // std::cout<<"DIVIDER :"<<divider<<std::endl;
+          if(currentFrame>=divider)
               currentFrame=0;
 
-          sourceRect.x = currentFrame*spriteWidth_;
+
+
+
       }
+      sourceRect.x = currentFrame * spriteWidth_;
 
 
   }
@@ -74,22 +77,28 @@ public:
         FrameManager(new_frame);
 
         if(IsKeyDown(KEY_W)) {
-            sourceRect = {0, 0, static_cast<float>(spriteWidth_), static_cast<float>(spriteHeith_)};
+            std::cout<<"SORUCE :"<<sourceRect.x<<std::endl;
+
             initialPosition.y -= vely;
             DrawTextureRec(up, sourceRect, initialPosition, WHITE);
         } else if(IsKeyDown(KEY_A)) {
-            sourceRect = {0, 0, static_cast<float>(spriteWidth_), static_cast<float>(spriteHeith_)};
+            std::cout<<"SORUCE :"<<sourceRect.x<<std::endl;
+
             initialPosition.x -= velx;
             DrawTextureRec(left, sourceRect, initialPosition, WHITE);
         } else if(IsKeyDown(KEY_S)) {
-            sourceRect = {0, 0, static_cast<float>(spriteWidth_), static_cast<float>(spriteHeith_)};
+            std::cout<<"SORUCE :"<<sourceRect.x<<std::endl;
+
             initialPosition.y += vely;
             DrawTextureRec(down, sourceRect, initialPosition, WHITE);
         } else if(IsKeyDown(KEY_D)) {
-            sourceRect = {0, 0, static_cast<float>(spriteWidth_), static_cast<float>(spriteHeith_)};
+            std::cout<<"SORUCE :"<<sourceRect.x<<std::endl;
+
             initialPosition.x += velx;
             DrawTextureRec(right, sourceRect, initialPosition, WHITE);
         } else {
+            std::cout<<"SORUCE :"<<sourceRect.x<<std::endl;
+
             DrawTextureRec(down, sourceRect, initialPosition, WHITE);
         }
 
