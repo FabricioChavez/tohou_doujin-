@@ -95,7 +95,7 @@ public:
           initialPosition.x += playerSpeed;
           currentFrame = 0; // Animación cuando se mueve hacia la derecha
       }
-      else if (isMovingUp && initialPosition.y > 0){
+      if (isMovingUp && initialPosition.y > 0){
           sourceRect.width = static_cast<float>(idleSpriteWidth);
           divider = 4; // Cambiar a 8 para animación de RIGHT
           initialPosition.y -= playerSpeed;
@@ -107,12 +107,7 @@ public:
           initialPosition.y += playerSpeed;
           currentFrame = 0; // Animación cuando se mueve hacia la derecha
       }
-      else
-      {
-          // Si el jugador no se está moviendo, mostrar el sprite de idle
-          sourceRect.width = static_cast<float>(idleSpriteWidth);
-          divider = 4; // Cambiar a 4 para animación de IDLE
-      }
+
 
 
   }
