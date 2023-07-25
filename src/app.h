@@ -5,7 +5,6 @@
 #ifndef PROJECT_TOUHOU_APP_H
 #define PROJECT_TOUHOU_APP_H
 #include "raylib.h"
-#include "global.h"
 #include "Player.h"
 using namespace std;
 Music music;
@@ -21,7 +20,7 @@ struct app{
         Rectangle sourceRect ={0,0,static_cast<float> (spriteWidth), static_cast<float > (spretHeigth)}; // Square to draw sprite in
         float currentFrame =0; // set current frame
         float frameTime = 0.0f; // set frame time
-        Vector2 position = { 720, 200 }; // windows postion intial
+        Vector2 position = { screenWidth/2, screenHeight/2 }; // windows postion intial
         SetTargetFPS(60);
         Player Marisa(position);
         while (!WindowShouldClose()) {

@@ -4,6 +4,6 @@
 
 #ifndef PROJECT_TOUHOU_GLOBAL_H
 #define PROJECT_TOUHOU_GLOBAL_H
-const int screenWidth = 2000;
-const int screenHeight = 1000;
+const int screenWidth = 480;
+const int screenHeight = 640;
 #endif //PROJECT_TOUHOU_GLOBAL_H
