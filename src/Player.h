@@ -4,13 +4,58 @@
 
 #ifndef PROJECT_TOUHOU_PLAYER_H
 #define PROJECT_TOUHOU_PLAYER_H
+
+#include <algorithm>
 #include "iostream"
 #include "raylib.h"
 #include "global.h"
+#include "vector"
+#include "string"
+#include "queue"
+#include <cmath>
+
+
+
+class Projectile {
+public:
+    Rectangle rect;
+    Vector2 velocity;
+    bool active;
+
+//    Projectile(float x, float y, float width, float height, float speed) {
+//        rect = { x, y, width, height };
+//        velocity = { 0, -speed
+//        };
+//        active = true;
+//    }
+    Projectile(float x, float y, float width, float height, float speed, float angle) {
+        rect = { x, y, width, height };
+        float radians = DEG2RAD * angle;
+        velocity = { speed * std::cos(radians), -speed * std::sin(radians) };
+        active = true;
+    }
+    void Update() {
+        if (active) {
+            rect.x += velocity.x;
+            rect.y += velocity.y;
+        }
+    }
+
+    void Draw() const {
+        if (active) {
+            DrawRectangleRec(rect, RED);
+        }
+    }
+};
+
+
 class  Player {
 
 private:
     //Load player textures
+    std::vector<Projectile> projectiles;
+    bool isShooting; // Variable para controlar si el jugador está disparando
+
     Texture2D left{};
     Texture2D right{};
     Texture2D down{} ;
@@ -25,7 +70,6 @@ private:
     int divider;
     int idleSpriteWidth;
     int movingSpriteWidth;
-
 
     const float playerSpeed = 5.0f;
 
@@ -46,17 +90,46 @@ public:
          framesSpeed = 0.2f; // Velocidad de la animación (menor es más rápido)
         sourceRect = {0, 0, static_cast<float>(idleSpriteWidth), static_cast<float>(spriteHeight)};
         divider = 4;
+
     }
 
-  void FrameManager(float  new_frame )
+
+    void Shoot(float angle) {
+        // Crear un nuevo proyectil en la posición del jugador
+        Projectile newProjectile(initialPosition.x + sourceRect.width/2 - 4, initialPosition.y + sourceRect.height / 2 - 30, 10, 10, 5,angle);
+        projectiles.push_back(newProjectile);
+    }
+
+    void UpdateProjectiles() {
+        std::cout << projectiles.size() << std::endl;
+        for (int i = 0; i < projectiles.size(); i++) {
+            projectiles[i].Update();
+            if (projectiles[i].rect.y < 0) {
+                std::cout << "remove"<< std::endl;
+                // Si el proyectil sale de la pantalla, desactivarlo y eliminarlo de la lista
+                projectiles[i].active = false;
+            }
+        }
+        // Eliminar los proyectiles inactivos de la lista
+        projectiles.erase(std::remove_if(projectiles.begin(), projectiles.end(), [](const Projectile& proj) {
+            return !proj.active;
+        }), projectiles.end());
+    }
+
+    void DrawProjectiles() {
+        for (const auto& projectile : projectiles) {
+            projectile.Draw();
+        }
+    }
+
+    void FrameManager(float  new_frame )
   {
       // Detectar teclas presionadas
-      bool isMovingLeft = IsKeyDown(KEY_A);
-      bool isMovingRight = IsKeyDown(KEY_D);
-      bool isMovingUp = IsKeyDown(KEY_W);
-      bool isMovingDown = IsKeyDown(KEY_S);
+      bool isMovingLeft = IsKeyDown(KEY_LEFT);
+      bool isMovingRight = IsKeyDown(KEY_RIGHT);
+      bool isMovingUp = IsKeyDown(KEY_UP);
+      bool isMovingDown = IsKeyDown(KEY_DOWN);
       framesCounter += GetFrameTime();
-
       // Actualizar animación
       if (framesCounter >= framesSpeed)
       {
@@ -113,10 +186,10 @@ public:
   }
     void drawPlayer(float  new_frame ){
         FrameManager(new_frame);
-        bool isMovingLeft = IsKeyDown(KEY_A);
-        bool isMovingRight = IsKeyDown(KEY_D);
-        bool isMovingUp = IsKeyDown(KEY_W);
-        bool isMovingDown = IsKeyDown(KEY_S);
+        bool isMovingLeft = IsKeyDown(KEY_LEFT);
+        bool isMovingRight = IsKeyDown(KEY_RIGHT);
+        bool isMovingUp = IsKeyDown(KEY_UP);
+        bool isMovingDown = IsKeyDown(KEY_DOWN);
         // Dibujar al jugador según la animación y el estado de movimiento
         if (isMovingLeft)
         {

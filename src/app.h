@@ -13,6 +13,7 @@ struct app{
     static void runApp(){
         InitAudioDevice();
         InitWindow(screenWidth, screenHeight, "Blockchain Visualization");
+        bool zKeyPressed = false; // Variable para controlar si se presiona la tecla "Z"
 
         Texture2D MarisaObject = LoadTexture("../assets/Marisa/RIGHT.png");
         int spriteWidth = MarisaObject.width/8;
@@ -23,16 +24,26 @@ struct app{
         Vector2 position = { screenWidth/2, screenHeight/2 }; // windows postion intial
         SetTargetFPS(60);
         Player Marisa(position);
+
         while (!WindowShouldClose()) {
 
-            frameTime += GetFrameTime();
-            //pra dibujar el frame
-
+            // Disparar proyectiles al presionar la tecla "Z"
+            if (IsKeyPressed(KEY_Z)) {
+                zKeyPressed = true;
+            }
+            if (zKeyPressed && IsKeyDown(KEY_Z)) {
+                Marisa.Shoot(90);
+            } else {
+                zKeyPressed = false;
+            }
 
 
 
             BeginDrawing();
             ClearBackground(BLACK);
+            // Actualizar y dibujar los proyectiles
+            Marisa.UpdateProjectiles();
+            Marisa.DrawProjectiles();
             Marisa.drawPlayer(frameTime);
                 EndDrawing();
             }
