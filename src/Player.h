@@ -10,44 +10,8 @@
 #include "raylib.h"
 #include "global.h"
 #include "vector"
-#include "string"
-#include "queue"
+#include "Projectile.h"
 #include <cmath>
-
-
-
-class Projectile {
-public:
-    Rectangle rect;
-    Vector2 velocity;
-    bool active;
-
-//    Projectile(float x, float y, float width, float height, float speed) {
-//        rect = { x, y, width, height };
-//        velocity = { 0, -speed
-//        };
-//        active = true;
-//    }
-    Projectile(float x, float y, float width, float height, float speed, float angle) {
-        rect = { x, y, width, height };
-        float radians = DEG2RAD * angle;
-        velocity = { speed * std::cos(radians), -speed * std::sin(radians) };
-        active = true;
-    }
-    void Update() {
-        if (active) {
-            rect.x += velocity.x;
-            rect.y += velocity.y;
-        }
-    }
-
-    void Draw() const {
-        if (active) {
-            DrawRectangleRec(rect, RED);
-        }
-    }
-};
-
 
 class  Player {
 
@@ -70,8 +34,11 @@ private:
     int divider;
     int idleSpriteWidth;
     int movingSpriteWidth;
-
+    bool zKeyPressed;
+    float shoot_angle;
     const float playerSpeed = 5.0f;
+    float spawn_ratio=0.05f;
+    float last_shoot_elapsed_time=0.0;
 
 public:
 
@@ -88,40 +55,59 @@ public:
          currentFrame = 0;
          framesCounter = 0.0f;
          framesSpeed = 0.2f; // Velocidad de la animación (menor es más rápido)
-        sourceRect = {0, 0, static_cast<float>(idleSpriteWidth), static_cast<float>(spriteHeight)};
-        divider = 4;
+         sourceRect = {0, 0, static_cast<float>(idleSpriteWidth), static_cast<float>(spriteHeight)};
+         divider = 4;
+         shoot_angle =90;
 
     }
 
 
     void Shoot(float angle) {
         // Crear un nuevo proyectil en la posición del jugador
-        Projectile newProjectile(initialPosition.x + sourceRect.width/2 - 4, initialPosition.y + sourceRect.height / 2 - 30, 10, 10, 5,angle);
+        Projectile newProjectile(initialPosition.x + sourceRect.width/2 - 4, initialPosition.y + sourceRect.height / 2 - 30, 10, 10, 720,angle);
         projectiles.push_back(newProjectile);
     }
 
-    void UpdateProjectiles() {
-        std::cout << projectiles.size() << std::endl;
-        for (int i = 0; i < projectiles.size(); i++) {
-            projectiles[i].Update();
-            if (projectiles[i].rect.y < 0) {
-                std::cout << "remove"<< std::endl;
-                // Si el proyectil sale de la pantalla, desactivarlo y eliminarlo de la lista
-                projectiles[i].active = false;
+    void DrawProjectiles() {
+
+
+
+
+        for (auto& projectile : projectiles) {
+            projectile.Draw();
+
+            if(projectile.rect.y<0)
+            {
+                std::cout << "remove : "<<projectiles.size()<< std::endl;
+                projectile.active = false;
             }
         }
-        // Eliminar los proyectiles inactivos de la lista
+
         projectiles.erase(std::remove_if(projectiles.begin(), projectiles.end(), [](const Projectile& proj) {
             return !proj.active;
         }), projectiles.end());
     }
 
-    void DrawProjectiles() {
-        for (const auto& projectile : projectiles) {
-            projectile.Draw();
-        }
+void Shoot_Action()
+{
+    // Disparar proyectiles al presionar la tecla "Z"
+    if (IsKeyPressed(KEY_Z)) {
+        zKeyPressed = true;
     }
+    if (zKeyPressed && IsKeyDown(KEY_Z)  ) {
+       std::cout<<"TIME :"<<last_shoot_elapsed_time<<std::endl;
+        if (last_shoot_elapsed_time >= spawn_ratio) {
+            std::cout<<"DISPARO"<<std::endl;
+            Shoot(shoot_angle);
+            last_shoot_elapsed_time = 0.0f;
+        }
 
+
+    } else {
+        zKeyPressed = false;
+    }
+    DrawProjectiles();
+}
     void FrameManager(float  new_frame )
   {
       // Detectar teclas presionadas
@@ -130,6 +116,7 @@ public:
       bool isMovingUp = IsKeyDown(KEY_UP);
       bool isMovingDown = IsKeyDown(KEY_DOWN);
       framesCounter += GetFrameTime();
+
       // Actualizar animación
       if (framesCounter >= framesSpeed)
       {
@@ -212,6 +199,17 @@ public:
             DrawTextureRec(up, sourceRect, initialPosition, WHITE);
         }
 
+
+        last_shoot_elapsed_time+=GetFrameTime();
+        Shoot_Action();
+        if(IsKeyDown(KEY_A))
+        {
+            shoot_angle++;
+        }
+        if(IsKeyDown(KEY_D))
+        {
+            shoot_angle--;
+        }
     }
 
 

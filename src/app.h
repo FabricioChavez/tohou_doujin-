@@ -6,46 +6,30 @@
 #define PROJECT_TOUHOU_APP_H
 #include "raylib.h"
 #include "Player.h"
+#include "Spawner.h"
 using namespace std;
 Music music;
 bool paused = false;
 struct app{
     static void runApp(){
         InitAudioDevice();
-        InitWindow(screenWidth, screenHeight, "Blockchain Visualization");
-        bool zKeyPressed = false; // Variable para controlar si se presiona la tecla "Z"
+        InitWindow(screenWidth, screenHeight, "Touhou Doujin");
 
-        Texture2D MarisaObject = LoadTexture("../assets/Marisa/RIGHT.png");
-        int spriteWidth = MarisaObject.width/8;
-        int spretHeigth = MarisaObject.height;
-        Rectangle sourceRect ={0,0,static_cast<float> (spriteWidth), static_cast<float > (spretHeigth)}; // Square to draw sprite in
-        float currentFrame =0; // set current frame
+
         float frameTime = 0.0f; // set frame time
         Vector2 position = { screenWidth/2, screenHeight/2 }; // windows postion intial
+        Vector2 spawner_position = {position.x , position.y-100};
         SetTargetFPS(60);
         Player Marisa(position);
+        Spawner Ring(spawner_position,10);
 
         while (!WindowShouldClose()) {
-
-            // Disparar proyectiles al presionar la tecla "Z"
-            if (IsKeyPressed(KEY_Z)) {
-                zKeyPressed = true;
-            }
-            if (zKeyPressed && IsKeyDown(KEY_Z)) {
-                Marisa.Shoot(90);
-            } else {
-                zKeyPressed = false;
-            }
-
-
-
             BeginDrawing();
             ClearBackground(BLACK);
-            // Actualizar y dibujar los proyectiles
-            Marisa.UpdateProjectiles();
-            Marisa.DrawProjectiles();
             Marisa.drawPlayer(frameTime);
-                EndDrawing();
+            Ring.Spawn_action_manager(GetFrameTime());
+
+             EndDrawing();
             }
         CloseWindow();
         }
