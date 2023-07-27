@@ -4,10 +4,24 @@
 
 #ifndef PROJECT_TOUHOU_GLOBAL_H
 #define PROJECT_TOUHOU_GLOBAL_H
-
 const int screenWidth = 800;
 const int screenHeight = 600;
-#include "Projectile.h"
-Texture2D Projectile_c::bull_c ;
-Texture2D Projectile::bull;
+#include "raylib.h"
+class Global {
+public:
+    static Global& GetInstance();
+
+    // Evitar la copia y asignación
+    Global(Global const&) = delete;
+    void operator=(Global const&) = delete;
+
+    Texture2D bull;
+    Texture2D bala;
+    Sound leftSound{};
+
+private:
+    Global(); // Constructor privado para evitar que se cree directamente
+};
+
+
 #endif //PROJECT_TOUHOU_GLOBAL_H
