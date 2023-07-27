@@ -10,6 +10,7 @@
 #include <vector>
 #include <cmath>
 #include "Projectile.h"
+
 class Spawner{
 
     Vector2 initialPosition; //Spawner initial postion
@@ -75,6 +76,7 @@ public:
             if (last_shoot_elapsed_time >= spawn_ratio) {
                 std::cout<<"DISPARO"<<std::endl;
                 Generate_ring();
+//                Generate_ring2(45);
                 angle_offset+=angle_change_rate;
                 last_shoot_elapsed_time = 0.0f;
             }

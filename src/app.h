@@ -4,7 +4,6 @@
 
 #ifndef PROJECT_TOUHOU_APP_H
 #define PROJECT_TOUHOU_APP_H
-#include "raylib.h"
 #include "Player.h"
 #include "Spawner.h"
 using namespace std;
@@ -15,6 +14,8 @@ struct app{
         InitAudioDevice();
         InitWindow(screenWidth, screenHeight, "Touhou Doujin");
 
+        Global& globaldata = Global::GetInstance();
+        std::cout << "peto " << std::endl;
 
         float frameTime = 0.0f; // set frame time
         Vector2 position = { screenWidth/2, screenHeight/2 }; // windows postion intial
@@ -23,7 +24,7 @@ struct app{
         Player Marisa(position);
         Spawner Ring(spawner_position,10 , 5.0f ,PINK); // PATTERN 1
         Spawner Ring2(spawner_position,3 , -5.0f ,SKYBLUE); //PATTER 2
-        Spawner Ring3(spawner_position,8,0.0f,BLUE);
+    //    Spawner Ring3(spawner_position,8,0.0f,BLUE);
         //BOTH PATTERNS COMPOSE THE FLOWER PATTERN
 
 

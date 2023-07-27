@@ -12,7 +12,6 @@
 #include "vector"
 #include "Projectile.h"
 #include <cmath>
-
 class  Player {
 
 private:
