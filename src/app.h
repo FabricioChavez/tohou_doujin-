@@ -21,13 +21,17 @@ struct app{
         Vector2 spawner_position = {position.x , position.y-100};
         SetTargetFPS(60);
         Player Marisa(position);
-        Spawner Ring(spawner_position,10);
+        Spawner Ring(spawner_position,10 , 5.0f ,PINK); // PATTERN 1
+        Spawner Ring2(spawner_position,10 , -5.0f ,SKYBLUE); //PATTER 2
+        //BOTH PATTERNS COMPOSE THE FLOWER PATTERN
+
 
         while (!WindowShouldClose()) {
             BeginDrawing();
             ClearBackground(BLACK);
             Marisa.drawPlayer(frameTime);
             Ring.Spawn_action_manager(GetFrameTime());
+            Ring2.Spawn_action_manager(GetFrameTime());
 
              EndDrawing();
             }

@@ -35,8 +35,9 @@ public:
     float  radius ;
     Vector2 velocity;
     Vector2 current_postion;
+    Color  color_;
     bool active;
-    Projectile_c(float x, float y, float radius ,  float speed, float angle):radius(radius) {
+    Projectile_c(float x, float y, float radius ,  float speed, float angle , Color color):radius(radius), color_(color) {
         current_postion = {x ,y };
         float radians = DEG2RAD * angle;
         velocity = { speed * std::cos(radians)*GetFrameTime(), -speed * std::sin(radians)*GetFrameTime() };
@@ -45,7 +46,7 @@ public:
     void Draw() {
         if (active) {
 
-            DrawCircle(current_postion.x,current_postion.y,radius,MAGENTA);
+            DrawCircle(current_postion.x,current_postion.y,radius,color_);
             current_postion.x += velocity.x;
             current_postion.y += velocity.y;
         }

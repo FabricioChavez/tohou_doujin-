@@ -23,20 +23,23 @@ class Spawner{
     int number_of_bullets=3; //Number of bullets in the pattern /default value must be 3 in order  to this for being a ring
     std::vector<Projectile_c> Ring_configuration; // Array of bullets that will be released in an n-ring configuration
 
+    Color color_;//Bullet's color
+
 public:
-    Spawner(const Vector2 &initialPosition, int numberOfBullets) : initialPosition(initialPosition),
-                                                                   number_of_bullets(numberOfBullets) {}
+    Spawner(const Vector2 &initialPosition, int numberOfBullets , float angle_change , Color color) : initialPosition(initialPosition),
+                                                                   number_of_bullets(numberOfBullets),angle_change_rate(angle_change),
+                                                                                                      color_(color) {}
 
     Spawner(const Vector2 &initialPosition, float spawnRatio, float bulletSpeed, int numberOfBullets) : initialPosition(
             initialPosition), spawn_ratio(spawnRatio), BulletSpeed(bulletSpeed), number_of_bullets(numberOfBullets) {}
 
 
     void Generate_ring() {
-        // Crear un nuevo proyectil en la posición del jugador
+        // Crear un nuevo n-ring con el siguiente numero de balas y con divider como separador entre los streams de balas
         auto divider = float(360.0/number_of_bullets);
 
         for (int i = 0; i < number_of_bullets; ++i) {
-            Projectile_c newProjectile(initialPosition.x , initialPosition.y ,3.0f,BulletSpeed , float((divider-90.0)+float(divider*(float(i+1)))) + angle_offset );
+            Projectile_c newProjectile(initialPosition.x , initialPosition.y ,3.0f,BulletSpeed , float((divider-90.0)+float(divider*(float(i+1)))) + angle_offset,color_ );
             Ring_configuration.push_back(newProjectile);
         }
 
