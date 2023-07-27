@@ -13,13 +13,13 @@
 class Spawner{
 
     Vector2 initialPosition; //Spawner initial postion
-    float spawn_ratio=0.25f; // Rate at wich bullets might appear
+    float spawn_ratio=0.20f; // Rate at wich bullets might appear
     float last_shoot_elapsed_time=0.0; // Time elapsed since last shooted bullet
 
     float BulletSpeed=180;
 
-    float angle_offset =1.0f; // The number of degress deviated from the normal coordinate position
-    float angle_change_rate = 10.0f; //rate of change that the angle increments
+    float angle_offset =90.0f; // The number of degress deviated from the normal coordinate position
+    float angle_change_rate = 20.0f; //rate of change that the angle increments
     int number_of_bullets=3; //Number of bullets in the pattern /default value must be 3 in order  to this for being a ring
     std::vector<Projectile_c> Ring_configuration; // Array of bullets that will be released in an n-ring configuration
 
@@ -46,6 +46,20 @@ public:
 
     }
 
+    void Generate_ring2(float angle) {
+        // Crear un nuevo n-ring con el siguiente numero de balas y con divider como separador entre los streams de balas
+        auto divider = float(360.0 / number_of_bullets);
+        auto barrido = float(angle / float(number_of_bullets - 1));
+        if (number_of_bullets == 1){
+            barrido = 0;
+        }
+        for (int i = 0; i < number_of_bullets; ++i) {
+            Projectile_c newProjectile(initialPosition.x , initialPosition.y ,6.0f,180 , -105 + barrido*i,color_ );
+            Ring_configuration.push_back(newProjectile);
+        }
+
+
+    }
     void DrawPattern() { //dt es Getframe para poder actualizar el tiempo elapsed
 
         for(auto & unique_projectile : Ring_configuration)

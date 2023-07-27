@@ -22,7 +22,8 @@ struct app{
         SetTargetFPS(60);
         Player Marisa(position);
         Spawner Ring(spawner_position,10 , 5.0f ,PINK); // PATTERN 1
-        Spawner Ring2(spawner_position,10 , -5.0f ,SKYBLUE); //PATTER 2
+        Spawner Ring2(spawner_position,3 , -5.0f ,SKYBLUE); //PATTER 2
+        Spawner Ring3(spawner_position,8,0.0f,BLUE);
         //BOTH PATTERNS COMPOSE THE FLOWER PATTERN
 
 
@@ -32,7 +33,7 @@ struct app{
             Marisa.drawPlayer(frameTime);
             Ring.Spawn_action_manager(GetFrameTime());
             Ring2.Spawn_action_manager(GetFrameTime());
-
+//            Ring3.Spawn_action_manager(GetFrameTime());
              EndDrawing();
             }
         CloseWindow();

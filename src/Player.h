@@ -70,9 +70,6 @@ public:
 
     void DrawProjectiles() {
 
-
-
-
         for (auto& projectile : projectiles) {
             projectile.Draw();
 
@@ -85,7 +82,7 @@ public:
 
         projectiles.erase(std::remove_if(projectiles.begin(), projectiles.end(), [](const Projectile& proj) {
             return !proj.active;
-        }), projectiles.end());
+        }), projectiles.end()   );
     }
 
 void Shoot_Action()
@@ -97,8 +94,10 @@ void Shoot_Action()
     if (zKeyPressed && IsKeyDown(KEY_Z)  ) {
        std::cout<<"TIME :"<<last_shoot_elapsed_time<<std::endl;
         if (last_shoot_elapsed_time >= spawn_ratio) {
-            std::cout<<"DISPARO"<<std::endl;
+            std::cout<<"DISPARO2"<<std::endl;
             Shoot(shoot_angle);
+//            Shoot(90+4);
+//            Shoot(90-4);
             last_shoot_elapsed_time = 0.0f;
         }
 
@@ -202,14 +201,14 @@ void Shoot_Action()
 
         last_shoot_elapsed_time+=GetFrameTime();
         Shoot_Action();
-        if(IsKeyDown(KEY_A))
-        {
-            shoot_angle++;
-        }
-        if(IsKeyDown(KEY_D))
-        {
-            shoot_angle--;
-        }
+//        if(IsKeyDown(KEY_A))
+//        {
+//            shoot_angle++;
+//        }
+//        if(IsKeyDown(KEY_D))
+//        {
+//            shoot_angle--;
+//        }
     }
 
 
