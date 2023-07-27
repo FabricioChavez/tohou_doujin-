@@ -5,6 +5,7 @@
 #ifndef PROJECT_TOUHOU_SPAWNER_H
 #define PROJECT_TOUHOU_SPAWNER_H
 #include <iostream>
+#include <algorithm>
 #include "raylib.h"
 #include "global.h"
 #include <vector>
@@ -67,13 +68,17 @@ public:
             unique_projectile.Draw();
         }
 
+        Ring_configuration.erase(std::remove_if(Ring_configuration.begin(),Ring_configuration.end(), [](const Projectile_c& proj) {
+            return !proj.active;
+
+        }), Ring_configuration.end()   );
     }
 
     void Spawn_action_manager(float dt)
     {
         last_shoot_elapsed_time+=dt;
             if (last_shoot_elapsed_time >= spawn_ratio) {
-                std::cout<<"DISPARO"<<std::endl;
+//                std::cout<<"DISPARO"<<std::endl;
                 Generate_ring();
                 angle_offset+=angle_change_rate;
                 last_shoot_elapsed_time = 0.0f;

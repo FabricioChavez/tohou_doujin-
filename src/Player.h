@@ -75,7 +75,7 @@ public:
 
             if(projectile.rect.y<0)
             {
-                std::cout << "remove : "<<projectiles.size()<< std::endl;
+//                std::cout << "remove : "<<projectiles.size()<< std::endl;
                 projectile.active = false;
             }
         }
@@ -92,9 +92,9 @@ void Shoot_Action()
         zKeyPressed = true;
     }
     if (zKeyPressed && IsKeyDown(KEY_Z)  ) {
-       std::cout<<"TIME :"<<last_shoot_elapsed_time<<std::endl;
+//       std::cout<<"TIME :"<<last_shoot_elapsed_time<<std::endl;
         if (last_shoot_elapsed_time >= spawn_ratio) {
-            std::cout<<"DISPARO2"<<std::endl;
+//            std::cout<<"DISPARO2"<<std::endl;
             Shoot(shoot_angle);
 //            Shoot(90+4);
 //            Shoot(90-4);

@@ -7,15 +7,18 @@
 #include "raylib.h"
 #include "Player.h"
 #include "Spawner.h"
+#include "global.h"
 using namespace std;
 Music music;
 bool paused = false;
 struct app{
+
     static void runApp(){
         InitAudioDevice();
         InitWindow(screenWidth, screenHeight, "Touhou Doujin");
 
-
+        Projectile_c::bull_c = LoadTexture("../assets/Marisa/Capa1.png");
+        Projectile::bull=LoadTexture("../assets/Marisa/bullte6.png");
         float frameTime = 0.0f; // set frame time
         Vector2 position = { screenWidth/2, screenHeight/2 }; // windows postion intial
         Vector2 spawner_position = {position.x , position.y-100};
