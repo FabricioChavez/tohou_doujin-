@@ -4,8 +4,8 @@
 
 #ifndef PROJECT_TOUHOU_GLOBAL_H
 #define PROJECT_TOUHOU_GLOBAL_H
-const int screenWidth = 800;
-const int screenHeight = 600;
+const int screenWidth = 1500;
+const int screenHeight = 1000;
 #include "raylib.h"
 class Global {
 public:

@@ -15,7 +15,7 @@
 class Spawner{
 
     Vector2 initialPosition; //Spawner initial postion
-    float spawn_ratio=0.20f; // Rate at wich bullets might appear
+    float spawn_ratio=3.20f; // Rate at wich bullets might appear
     float last_shoot_elapsed_time=0.0; // Time elapsed since last shooted bullet
 
     float BulletSpeed=180;
@@ -95,7 +95,7 @@ public:
 class Spawner_temp{
 
     Vector2 initialPosition; //Spawner initial postion
-    float spawn_ratio=0.20f; // Rate at wich bullets might appear
+    float spawn_ratio=1.20f; // Rate at wich bullets might appear
     float last_shoot_elapsed_time=0.0; // Time elapsed since last shooted bullet
 
     float BulletSpeed=180;
@@ -143,6 +143,43 @@ public:
 
 
     }
+    void Generate_ring3() {
+        spawn_ratio = 1.5f;
+        number_of_bullets = 100;
+        // Crear un nuevo n-ring con el siguiente numero de balas y con divider como separador entre los streams de balas
+        auto divider = float(360.0 / number_of_bullets);
+        float num_puntas = 10;
+        for (int i = 0; i < number_of_bullets; ++i) {
+            auto angle_bullet = float((divider-90.0)+float(divider*(float(i+1)))) + angle_offset;
+            std::cout << "angulo:"<<angle_bullet << std::endl;
+
+            auto vel_Extra = sin(num_puntas*angle_bullet*(PI/360))*100;
+            if (vel_Extra < 0){
+                vel_Extra = vel_Extra*-1;
+            }
+            std::cout << vel_Extra << std::endl;
+            Projectile_c newProjectile(initialPosition.x , initialPosition.y ,6.0f,180 + vel_Extra , angle_bullet,color_ );
+            Ring_configuration.push_back(newProjectile);
+        }
+
+
+    }
+    void Generate_ring_flower() {
+        spawn_ratio = 0.20f;
+        // Crear un nuevo n-ring con el siguiente numero de balas y con divider como separador entre los streams de balas
+        auto divider = float(360.0 / number_of_bullets);
+        for (int i = 0; i < number_of_bullets; ++i) {
+            auto angle_bullet = float((divider-90.0)+float(divider*(float(i+1)))) + angle_offset;
+            Projectile_c newProjectile(initialPosition.x , initialPosition.y ,6.0f,BulletSpeed , angle_bullet,color_ );
+            Projectile_c newProjectile2(initialPosition.x , initialPosition.y ,6.0f,BulletSpeed , angle_bullet*-1,color_ );
+
+            Ring_configuration.push_back(newProjectile);
+            Ring_configuration.push_back(newProjectile2);
+
+        }
+
+
+    }
     void DrawPattern() { //dt es Getframe para poder actualizar el tiempo elapsed
         std::cout<<"NUMER OF USES :"<<max_numer_of_uses<<std::endl;
 
@@ -157,19 +194,18 @@ public:
                     }), Ring_configuration.end());
 
     }
-    void Spawn_action_manager(float dt)
+    void  Spawn_action_manager(float dt)
     {
-        last_shoot_elapsed_time+=dt;
 
         if (last_shoot_elapsed_time >= spawn_ratio) {
             number_of_uses++;
-            if ( number_of_uses<=max_numer_of_uses)
-            Generate_ring();
-
+//            if ( number_of_uses<=max_numer_of_uses)
+            Generate_ring3();
             angle_offset+=angle_change_rate;
             last_shoot_elapsed_time = 0.0f;
         }
 
+        last_shoot_elapsed_time+=dt;
 
             DrawPattern();
     }
